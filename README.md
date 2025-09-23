@@ -2,6 +2,10 @@
 
 ## Exemple d'utilisation de la gestion des cookies
 
+### Politique de cookies
+
+Voir le fichier [PolitiqueDeCookies.html](PolitiqueDeCookies.html)
+
 ### Personalisation des couleurs dans le fichier tarteaucitron.min.css
 
 ```css
