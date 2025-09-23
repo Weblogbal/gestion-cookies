@@ -2,7 +2,7 @@
 
 ## Exemple d'utilisation de la gestion des cookies
 
-### Personalisation des couleurs dans le fichier tarteaucitron.css
+### Personalisation des couleurs dans le fichier tarteaucitron.min.css
 
 ```css
 :root {
@@ -11,10 +11,10 @@
 }
 ```
 
-### Code Html à insérer dans le `<head>` de vos pages
+### Code HTML à insérer dans le `<head>` de vos pages
 
 ```html
-	<link rel="stylesheet" href="/cookies-gestion/css/tarteaucitron.css" />
+	<link rel="stylesheet" href="/cookies-gestion/css/tarteaucitron.min.css" />
 	<script src="/cookies-gestion/tarteaucitron.js"></script>
 	<script type="text/javascript">
       tarteaucitron.init({
