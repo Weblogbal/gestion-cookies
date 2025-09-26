@@ -1,17 +1,17 @@
 @charset "UTF-8";
 
 :root {
-    --button-bg-color: #000000;
-    --button-text-color: #ffa726;
+    --tarteaucitron-button-bg-color: #000000;
+    --tarteaucitron-button-text-color: #ffa726;
 }
 
 #tarteaucitronRoot .tarteaucitronAllow {
-    background: var(--button-bg-color);
-    color: var(--button-text-color);
+    background: var(--tarteaucitron-button-bg-color);
+    color: var(--tarteaucitron-button-text-color);
 }
 #tarteaucitronRoot .tarteaucitronDeny {
-    background: var(--button-bg-color);
-    color: var(--button-text-color);
+    background: var(--tarteaucitron-button-bg-color);
+    color: var(--tarteaucitron-button-text-color);
 }
 
 /* min ready */
