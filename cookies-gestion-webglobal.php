@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -118,7 +118,12 @@ class CookiesGestionWebglobal {
                     </tr>
                     <tr valign="top">
                         <th scope="row">JavaScript personnalisé ( sans les balises script ) </th>
-                        <td><textarea name="cg_custom_js" rows="10" cols="50" class="large-text code"><?php echo esc_textarea(get_option('cg_custom_js', '')); ?></textarea></td>
+                        <td>
+                            <textarea name="cg_custom_js" rows="10" cols="50" class="large-text code"><?php echo esc_textarea(get_option('cg_custom_js', '')); ?></textarea>
+                            <p>
+                                Ajoutez votre code JavaScript personnalisé ici extrait de <a href="https://tarteaucitron.io/installation-gratuite-open-source/" target="_blank">https://tarteaucitron.io/installation-gratuite-open-source/</a>
+                            </p>
+                        </td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
