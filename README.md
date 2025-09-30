@@ -1,6 +1,14 @@
 # gestion-cookies
 
-## Exemple d'utilisation de la gestion des cookies
+## Pour wordpress
+
+Utiliser le dossier complet, le plugin est à la racine.
+
+La configuration se fait dans l'administration de wordpress, dans le menu du plugin.
+
+## Pour une utilisation hors wordpress
+
+Utilisez le dossier `cookies-gestion` dans votre projet.
 
 ### Politique de cookies
 
