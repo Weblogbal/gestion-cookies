@@ -14,10 +14,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Inclure les fichiers de mise à jour
-require_once plugin_dir_path(__FILE__) . '../includes/class-update-checker.php';
-require_once plugin_dir_path(__FILE__) . '../includes/class-plugin-version-display.php';
-require_once plugin_dir_path(__FILE__) . '../includes/update-config.php';
+// Inclure les classes directement dans le plugin
+require_once plugin_dir_path(__FILE__) . 'includes/class-update-checker.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-plugin-version-display.php';
+require_once plugin_dir_path(__FILE__) . 'includes/update-config.php';
 
 // Classe principale du plugin
 class CookiesGestionWebglobal {
