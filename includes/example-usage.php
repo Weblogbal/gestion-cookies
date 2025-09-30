@@ -1,8 +1,6 @@
 <?php
 /**
  * Exemple d'utilisation de Webglobal_Plugin_Version_Display
- * Plugin Name: Exemple Plugin
- * Version: 1.0.0
  */
 
 // Inclure les fichiers requis
