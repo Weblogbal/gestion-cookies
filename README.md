@@ -10,8 +10,8 @@ Voir le fichier [PolitiqueDeCookies.html](PolitiqueDeCookies.html)
 
 ```css
 :root {
-    --button-bg-color: #000000;
-    --button-text-color: #ffa726;
+    --tarteaucitron-button-bg-color: #000000;
+    --tarteaucitron-button-text-color: #ffa726;
 }
 ```
 
