@@ -36,7 +36,7 @@ class Webglobal_Plugin_Version_Display {
 
         // Vérifier s'il y a une mise à jour disponible
         if ($this->updater) {
-            $remote_data = $this->updater->get_remote_version();
+            $remote_data = $this->updater->get_remote_version_data();
             if ($remote_data && version_compare($current_version, $remote_data->version, '<')) {
                 $update_available = true;
                 $remote_version = $remote_data->version;
@@ -136,6 +136,9 @@ class Webglobal_Plugin_Version_Display {
      * Récupère l'URL du changelog
      */
     private function get_changelog_url() {
+        if ($this->updater && method_exists($this->updater, 'get_changelog_url')) {
+            return $this->updater->get_changelog_url();
+        }
         $github_url = $this->get_github_url();
         return $github_url ? $github_url . '/blob/main/CHANGELOG.md' : '';
     }

@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -44,21 +44,21 @@ class CookiesGestionWebglobal {
      * Initialise le système de mise à jour automatique
      */
     private function init_updater() {
-        global $update_config;
-
-        if (class_exists('Webglobal_Update_Checker') && isset($update_config)) {
+        if (class_exists('Webglobal_Update_Checker')) {
             $this->update_checker = new Webglobal_Update_Checker(
                 __FILE__,
-                $update_config['github']['username'] ?? 'Weblogbal',
-                $update_config['github']['repository'] ?? 'gestion-cookies'
+                'Weblogbal',
+                'gestion-cookies'
             );
 
             // Initialiser l'affichage des versions
-            $this->version_display = new Webglobal_Plugin_Version_Display(
-                $this->update_checker,
-                __FILE__,
-                $update_config['plugin']['text_domain'] ?? 'gestion-cookies'
-            );
+            if (class_exists('Webglobal_Plugin_Version_Display')) {
+                $this->version_display = new Webglobal_Plugin_Version_Display(
+                    $this->update_checker,
+                    __FILE__,
+                    'gestion-cookies'
+                );
+            }
         }
     }
 
@@ -138,14 +138,14 @@ class CookiesGestionWebglobal {
         $plugin_dir = plugin_dir_url(__FILE__);
         $parent_dir = dirname($plugin_dir);
         ?>
-        <link rel="stylesheet" href="<?php echo esc_url($parent_dir . '/gestion-cookies/cookies-gestion/css/tarteaucitron.min.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo esc_url($parent_dir . '/cookies-gestion/cookies-gestion/css/tarteaucitron.min.css'); ?>" />
         <style>
             :root {
                 --tarteaucitron-button-bg-color: <?php echo esc_attr($bg_color); ?> !important;
                 --tarteaucitron-button-text-color: <?php echo esc_attr($text_color); ?> !important;
             }
         </style>
-        <script src="<?php echo esc_url($parent_dir . '/gestion-cookies/cookies-gestion/tarteaucitron.js'); ?>"></script>
+        <script src="<?php echo esc_url($parent_dir . '/cookies-gestion/cookies-gestion/tarteaucitron.js'); ?>"></script>
         <script type="text/javascript">
             tarteaucitron.init({
                 "privacyUrl": "<?php echo esc_js($privacy_url); ?>",

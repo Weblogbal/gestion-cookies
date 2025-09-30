@@ -228,6 +228,13 @@ class Webglobal_Update_Checker {
     }
     
     /**
+     * Récupère les données de version distante (méthode publique)
+     */
+    public function get_remote_version_data() {
+        return $this->get_remote_version();
+    }
+    
+    /**
      * Retourne l'URL du changelog
      */
     public function get_changelog_url() {
