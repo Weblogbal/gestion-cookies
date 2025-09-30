@@ -1,5 +1,5 @@
 {
-   "version": "1.0.6",
+   "version": "1.0.7",
    "download_url": "https://github.com/Weblogbal/gestion-cookies/archive/refs/heads/main.zip",
    "details_url": "https://github.com/Weblogbal/gestion-cookies",
    "changelog": "https://github.com/Weblogbal/gestion-cookies/blob/main/CHANGELOG.md",
@@ -8,6 +8,6 @@
    "last_updated": "2025-09-30",
    "sections": {
       "description": "Plugin WordPress pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.",
-      "changelog": "* Version 1.0.6 : Correction de bugs mineurs et amélioration de la compatibilité"
+      "changelog": "* Version 1.0.7 : Ajout de nouvelles fonctionnalités et amélioration de la compatibilité"
    }
 }
