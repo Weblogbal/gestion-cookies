@@ -66,7 +66,20 @@ class Webglobal_Plugin_Version_Display {
                         <span class="dashicons dashicons-update"></span>
                         <strong><?php esc_html_e('Mise à jour disponible !', $this->text_domain); ?></strong><br>
                         <?php printf(esc_html__('Version %s disponible.', $this->text_domain), '<code>' . esc_html($remote_version) . '</code>'); ?>
-                        <a href="<?php echo esc_url($update_url); ?>" class="button button-secondary" style="margin-left: 10px;">
+                        
+                        <br><br>
+                        <form method="post" style="display: inline-block; margin-right: 10px;">
+                            <?php wp_nonce_field('update_plugin_' . $this->plugin_file, 'update_nonce'); ?>
+                            <input type="hidden" name="action" value="update_plugin">
+                            <input type="hidden" name="plugin_file" value="<?php echo esc_attr($this->plugin_file); ?>">
+                            <input type="hidden" name="new_version" value="<?php echo esc_attr($remote_version); ?>">
+                            <button type="submit" class="button button-primary">
+                                <span class="dashicons dashicons-update"></span>
+                                <?php esc_html_e('Mettre à jour maintenant', $this->text_domain); ?>
+                            </button>
+                        </form>
+                        
+                        <a href="<?php echo esc_url($update_url); ?>" class="button button-secondary">
                             <?php esc_html_e('Aller aux extensions', $this->text_domain); ?>
                         </a>
                     </p>
@@ -152,9 +165,10 @@ class Webglobal_Plugin_Version_Display {
     }
 
     /**
-     * Gère les actions POST (vérification des mises à jour)
+     * Gère les actions POST (vérification des mises à jour et mise à jour directe)
      */
     public function handle_post_actions() {
+        // Vérification des mises à jour
         if (isset($_POST['check_update'])) {
             // Vider le cache des mises à jour
             $cache_key = md5(plugin_basename($this->plugin_file) . '_update_checker');
@@ -163,6 +177,95 @@ class Webglobal_Plugin_Version_Display {
             add_action('admin_notices', function() {
                 echo '<div class="notice notice-success is-dismissible"><p>' . __('Cache des mises à jour vidé. La vérification sera effectuée lors de la prochaine visite.', $this->text_domain) . '</p></div>';
             });
+        }
+        
+        // Mise à jour directe du plugin
+        if (isset($_POST['action']) && $_POST['action'] === 'update_plugin') {
+            if (!wp_verify_nonce($_POST['update_nonce'], 'update_plugin_' . $this->plugin_file)) {
+                wp_die('Erreur de sécurité');
+            }
+            
+            if (!current_user_can('update_plugins')) {
+                wp_die('Vous n\'avez pas les permissions nécessaires');
+            }
+            
+            $this->perform_plugin_update();
+        }
+    }
+    
+    /**
+     * Effectue la mise à jour du plugin
+     */
+    private function perform_plugin_update() {
+        if (!$this->updater) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur : système de mise à jour non disponible.</p></div>';
+            });
+            return;
+        }
+        
+        $remote_data = $this->updater->get_remote_version_data();
+        if (!$remote_data) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur : impossible de récupérer les informations de mise à jour.</p></div>';
+            });
+            return;
+        }
+        
+        // Inclure les fichiers nécessaires pour la mise à jour
+        if (!function_exists('request_filesystem_credentials')) {
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+        }
+        if (!class_exists('Plugin_Upgrader')) {
+            require_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
+        }
+        
+        // Vérifier les permissions du système de fichiers
+        $creds = request_filesystem_credentials('', '', false, false, array());
+        if ($creds === false) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur : permissions insuffisantes pour la mise à jour.</p></div>';
+            });
+            return;
+        }
+        
+        if (!WP_Filesystem($creds)) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur : impossible d\'initialiser le système de fichiers.</p></div>';
+            });
+            return;
+        }
+        
+        // Créer l'upgrader avec un skin silencieux
+        $skin = new WP_Ajax_Upgrader_Skin();
+        $upgrader = new Plugin_Upgrader($skin);
+        
+        // Effectuer la mise à jour
+        $plugin_slug = plugin_basename($this->plugin_file);
+        
+        // Télécharger et installer la nouvelle version
+        $download_url = $remote_data->download_url;
+        $result = $upgrader->install($download_url);
+        
+        if (is_wp_error($result)) {
+            add_action('admin_notices', function() use ($result) {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur lors de la mise à jour : ' . esc_html($result->get_error_message()) . '</p></div>';
+            });
+        } else if ($result === false) {
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error is-dismissible"><p>Erreur : la mise à jour a échoué.</p></div>';
+            });
+        } else {
+            // Vider les caches
+            wp_clean_plugins_cache();
+            delete_transient(md5(plugin_basename($this->plugin_file) . '_update_checker'));
+            
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-success is-dismissible"><p><strong>Plugin mis à jour avec succès !</strong> La page va se recharger...</p></div>';
+            });
+            
+            // Rediriger pour éviter la resoumission du formulaire
+            echo '<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>';
         }
     }
 }
