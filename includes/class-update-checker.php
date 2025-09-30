@@ -43,6 +43,10 @@ class Webglobal_Update_Checker {
             $this->plugin_folder = pathinfo($this->plugin_slug, PATHINFO_FILENAME);
         }
         
+        error_log("Update Checker Init: Plugin slug = {$this->plugin_slug}");
+        error_log("Update Checker Init: Plugin folder = {$this->plugin_folder}");
+        error_log("Update Checker Init: Current version = {$this->plugin_version}");
+        
         $this->init_hooks();
     }
     
@@ -54,6 +58,8 @@ class Webglobal_Update_Checker {
         add_filter('pre_set_site_transient_update_plugins', [$this, 'check_for_updates']);
         add_filter('upgrader_post_install', [$this, 'after_install'], 10, 3);
         add_action('upgrader_process_complete', [$this, 'purge_cache'], 10, 2);
+        
+        error_log("Update Checker: Hooks registered for {$this->plugin_slug}");
     }
     
     /**
@@ -72,7 +78,14 @@ class Webglobal_Update_Checker {
             return $transient;
         }
         
+        // Vérifier que ce plugin est bien dans la liste des plugins vérifiés
+        if (!isset($transient->checked[$this->plugin_slug])) {
+            error_log("WP Update Check: Plugin {$this->plugin_slug} not in checked list");
+            return $transient;
+        }
+        
         error_log("WP Update Check: Starting for plugin: " . $this->plugin_slug);
+        error_log("WP Update Check: Plugin folder: " . $this->plugin_folder);
         
         $remote_version = $this->get_remote_version();
         
@@ -83,7 +96,7 @@ class Webglobal_Update_Checker {
             if ($needs_update) {
                 error_log("WP Update Check: Adding update info to transient for key: {$this->plugin_slug}");
                 
-                $transient->response[$this->plugin_slug] = (object) [
+                $update_info = (object) [
                     'slug' => $this->plugin_folder,
                     'plugin' => $this->plugin_slug,
                     'new_version' => $remote_version->version,
@@ -91,10 +104,14 @@ class Webglobal_Update_Checker {
                     'package' => $remote_version->download_url,
                     'tested' => $remote_version->tested,
                     'requires_php' => $remote_version->requires_php,
-                    'compatibility' => new stdClass()
+                    'compatibility' => new stdClass(),
+                    'id' => $this->plugin_slug
                 ];
                 
+                $transient->response[$this->plugin_slug] = $update_info;
+                
                 error_log("WP Update Check: Update info added successfully");
+                error_log("WP Update Check: Transient response keys: " . implode(', ', array_keys($transient->response)));
             }
         } else {
             error_log("WP Update Check: No remote version data");
