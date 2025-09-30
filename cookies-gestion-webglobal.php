@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,15 +14,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Inclure les classes directement dans le plugin
-require_once plugin_dir_path(__FILE__) . 'includes/class-update-checker.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-plugin-version-display.php';
-require_once plugin_dir_path(__FILE__) . 'includes/update-config.php';
+// Inclusion du système de mise à jour
+if (file_exists(__DIR__ . '/includes/class-update-checker.php')) {
+    require_once __DIR__ . '/includes/class-update-checker.php';
+}
+if (file_exists(__DIR__ . '/includes/class-plugin-version-display.php')) {
+    require_once __DIR__ . '/includes/class-plugin-version-display.php';
+}
 
 // Classe principale du plugin
 class CookiesGestionWebglobal {
 
-    private $updater;
+    private $update_checker;
     private $version_display;
 
     public function __construct() {
@@ -41,20 +44,20 @@ class CookiesGestionWebglobal {
      * Initialise le système de mise à jour automatique
      */
     private function init_updater() {
-        $config = require plugin_dir_path(__FILE__) . '../includes/update-config.php';
+        global $update_config;
 
-        if (isset($config['github']['username']) && isset($config['github']['repository'])) {
-            $this->updater = new Webglobal_Update_Checker(
+        if (class_exists('Webglobal_Update_Checker') && isset($update_config)) {
+            $this->update_checker = new Webglobal_Update_Checker(
                 __FILE__,
-                $config['github']['username'],
-                $config['github']['repository']
+                $update_config['github']['username'] ?? 'Weblogbal',
+                $update_config['github']['repository'] ?? 'gestion-cookies'
             );
 
             // Initialiser l'affichage des versions
             $this->version_display = new Webglobal_Plugin_Version_Display(
-                $this->updater,
+                $this->update_checker,
                 __FILE__,
-                'gestion-cookies'
+                $update_config['plugin']['text_domain'] ?? 'gestion-cookies'
             );
         }
     }
@@ -190,16 +193,7 @@ class CookiesGestionWebglobal {
             echo '<script type="text/javascript">' . $custom_js . '</script>';
         }
     }
-
-    /**
-     * Récupère la version actuelle du plugin
-     */
-    private function get_plugin_version() {
-        $plugin_data = get_file_data(__FILE__, ['Version' => 'Version'], 'plugin');
-        return $plugin_data['Version'];
-    }
 }
 
 // Initialiser le plugin
 new CookiesGestionWebglobal();
-?>

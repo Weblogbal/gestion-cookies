@@ -1,0 +1,45 @@
+# Archives et fichiers compressés
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.bak
+
+# Logs
+*.log
+logs/
+
+# Cache
+cache/
+*.cache
+
+# Environnements de développement
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+
+# Node.js (si utilisé)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Composer (si utilisé)
+vendor/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives de plugins
+cookies-gestion-webglobal.zip
