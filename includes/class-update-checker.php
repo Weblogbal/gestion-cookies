@@ -72,12 +72,17 @@ class Webglobal_Update_Checker {
             return $transient;
         }
         
+        error_log("WP Update Check: Starting for plugin: " . $this->plugin_slug);
+        
         $remote_version = $this->get_remote_version();
         
         if ($remote_version) {
             $needs_update = version_compare($this->plugin_version, $remote_version->version, '<');
+            error_log("WP Update Check: Current: {$this->plugin_version}, Remote: {$remote_version->version}, Needs update: " . ($needs_update ? 'YES' : 'NO'));
             
             if ($needs_update) {
+                error_log("WP Update Check: Adding update info to transient for key: {$this->plugin_slug}");
+                
                 $transient->response[$this->plugin_slug] = (object) [
                     'slug' => $this->plugin_folder,
                     'plugin' => $this->plugin_slug,
@@ -88,7 +93,11 @@ class Webglobal_Update_Checker {
                     'requires_php' => $remote_version->requires_php,
                     'compatibility' => new stdClass()
                 ];
+                
+                error_log("WP Update Check: Update info added successfully");
             }
+        } else {
+            error_log("WP Update Check: No remote version data");
         }
         
         return $transient;
