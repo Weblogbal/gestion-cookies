@@ -138,14 +138,14 @@ class CookiesGestionWebglobal {
         $plugin_dir = plugin_dir_url(__FILE__);
         $parent_dir = dirname($plugin_dir);
         ?>
-        <link rel="stylesheet" href="<?php echo esc_url($parent_dir . '/cookies-gestion/cookies-gestion/css/tarteaucitron.min.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo esc_url($parent_dir . '/gestion-cookies/cookies-gestion/css/tarteaucitron.min.css'); ?>" />
         <style>
             :root {
                 --tarteaucitron-button-bg-color: <?php echo esc_attr($bg_color); ?> !important;
                 --tarteaucitron-button-text-color: <?php echo esc_attr($text_color); ?> !important;
             }
         </style>
-        <script src="<?php echo esc_url($parent_dir . '/cookies-gestion/cookies-gestion/tarteaucitron.js'); ?>"></script>
+        <script src="<?php echo esc_url($parent_dir . '/gestion-cookies/cookies-gestion/tarteaucitron.js'); ?>"></script>
         <script type="text/javascript">
             tarteaucitron.init({
                 "privacyUrl": "<?php echo esc_js($privacy_url); ?>",
