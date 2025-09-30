@@ -13,6 +13,7 @@ class Webglobal_Update_Checker {
     private $github_repository;
     private $plugin_file;
     private $plugin_slug;
+    private $plugin_folder;
     private $plugin_version;
     private $version_json_url;
     private $zip_download_url;
@@ -35,6 +36,12 @@ class Webglobal_Update_Checker {
         $this->zip_download_url = "https://github.com/{$github_username}/{$github_repository}/archive/refs/heads/main.zip";
         $this->cache_key = md5($this->plugin_slug . '_update_checker');
         $this->cache_allowed = true;
+        
+        // Pour les mises à jour WordPress, utiliser le nom du dossier comme slug principal
+        $this->plugin_folder = dirname($this->plugin_slug);
+        if ($this->plugin_folder === '.') {
+            $this->plugin_folder = pathinfo($this->plugin_slug, PATHINFO_FILENAME);
+        }
         
         $this->init_hooks();
     }
@@ -67,22 +74,21 @@ class Webglobal_Update_Checker {
         
         $remote_version = $this->get_remote_version();
         
-        if ($remote_version && version_compare($this->plugin_version, $remote_version->version, '<')) {
-            $plugin_folder = dirname($this->plugin_slug);
-            if ($plugin_folder === '.') {
-                $plugin_folder = pathinfo($this->plugin_slug, PATHINFO_FILENAME);
-            }
+        if ($remote_version) {
+            $needs_update = version_compare($this->plugin_version, $remote_version->version, '<');
             
-            $transient->response[$this->plugin_slug] = (object) [
-                'slug' => $plugin_folder,
-                'plugin' => $this->plugin_slug,
-                'new_version' => $remote_version->version,
-                'url' => $remote_version->details_url,
-                'package' => $remote_version->download_url,
-                'tested' => $remote_version->tested,
-                'requires_php' => $remote_version->requires_php,
-                'compatibility' => new stdClass()
-            ];
+            if ($needs_update) {
+                $transient->response[$this->plugin_slug] = (object) [
+                    'slug' => $this->plugin_folder,
+                    'plugin' => $this->plugin_slug,
+                    'new_version' => $remote_version->version,
+                    'url' => $remote_version->details_url,
+                    'package' => $remote_version->download_url,
+                    'tested' => $remote_version->tested,
+                    'requires_php' => $remote_version->requires_php,
+                    'compatibility' => new stdClass()
+                ];
+            }
         }
         
         return $transient;
@@ -132,12 +138,7 @@ class Webglobal_Update_Checker {
             return $result;
         }
         
-        $plugin_folder = dirname($this->plugin_slug);
-        if ($plugin_folder === '.') {
-            $plugin_folder = pathinfo($this->plugin_slug, PATHINFO_FILENAME);
-        }
-        
-        if (!isset($args->slug) || $args->slug !== $plugin_folder) {
+        if (!isset($args->slug) || $args->slug !== $this->plugin_folder) {
             return $result;
         }
         
