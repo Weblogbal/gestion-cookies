@@ -43,9 +43,9 @@ class Webglobal_Update_Checker {
             $this->plugin_folder = pathinfo($this->plugin_slug, PATHINFO_FILENAME);
         }
         
-        error_log("Update Checker Init: Plugin slug = {$this->plugin_slug}");
-        error_log("Update Checker Init: Plugin folder = {$this->plugin_folder}");
-        error_log("Update Checker Init: Current version = {$this->plugin_version}");
+        //error_log("Update Checker Init: Plugin slug = {$this->plugin_slug}");
+        //error_log("Update Checker Init: Plugin folder = {$this->plugin_folder}");
+        //error_log("Update Checker Init: Current version = {$this->plugin_version}");
         
         $this->init_hooks();
     }
@@ -59,7 +59,7 @@ class Webglobal_Update_Checker {
         add_filter('upgrader_post_install', [$this, 'after_install'], 10, 3);
         add_action('upgrader_process_complete', [$this, 'purge_cache'], 10, 2);
         
-        error_log("Update Checker: Hooks registered for {$this->plugin_slug}");
+        //error_log("Update Checker: Hooks registered for {$this->plugin_slug}");
     }
     
     /**
@@ -80,21 +80,21 @@ class Webglobal_Update_Checker {
         
         // Vérifier que ce plugin est bien dans la liste des plugins vérifiés
         if (!isset($transient->checked[$this->plugin_slug])) {
-            error_log("WP Update Check: Plugin {$this->plugin_slug} not in checked list");
+            //error_log("WP Update Check: Plugin {$this->plugin_slug} not in checked list");
             return $transient;
         }
         
-        error_log("WP Update Check: Starting for plugin: " . $this->plugin_slug);
-        error_log("WP Update Check: Plugin folder: " . $this->plugin_folder);
+        //error_log("WP Update Check: Starting for plugin: " . $this->plugin_slug);
+        //error_log("WP Update Check: Plugin folder: " . $this->plugin_folder);
         
         $remote_version = $this->get_remote_version();
         
         if ($remote_version) {
             $needs_update = version_compare($this->plugin_version, $remote_version->version, '<');
-            error_log("WP Update Check: Current: {$this->plugin_version}, Remote: {$remote_version->version}, Needs update: " . ($needs_update ? 'YES' : 'NO'));
+            //error_log("WP Update Check: Current: {$this->plugin_version}, Remote: {$remote_version->version}, Needs update: " . ($needs_update ? 'YES' : 'NO'));
             
             if ($needs_update) {
-                error_log("WP Update Check: Adding update info to transient for key: {$this->plugin_slug}");
+                //error_log("WP Update Check: Adding update info to transient for key: {$this->plugin_slug}");
                 
                 $update_info = (object) [
                     'slug' => $this->plugin_folder,
@@ -110,11 +110,11 @@ class Webglobal_Update_Checker {
                 
                 $transient->response[$this->plugin_slug] = $update_info;
                 
-                error_log("WP Update Check: Update info added successfully");
-                error_log("WP Update Check: Transient response keys: " . implode(', ', array_keys($transient->response)));
+                //error_log("WP Update Check: Update info added successfully");
+                //error_log("WP Update Check: Transient response keys: " . implode(', ', array_keys($transient->response)));
             }
         } else {
-            error_log("WP Update Check: No remote version data");
+            //error_log("WP Update Check: No remote version data");
         }
         
         return $transient;
