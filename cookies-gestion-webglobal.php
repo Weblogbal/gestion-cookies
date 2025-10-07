@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.21
+ * Version: 1.0.30
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -87,6 +87,7 @@ class CookiesGestionWebglobal {
         register_setting('cookies_gestion_options', 'cg_privacy_url');
         register_setting('cookies_gestion_options', 'cg_custom_js');
         register_setting('cookies_gestion_options', 'cg_orientation');
+        register_setting('cookies_gestion_options', 'cg_show_alert_small');
     }
 
     // Gérer les actions POST
@@ -130,6 +131,16 @@ class CookiesGestionWebglobal {
                         </td>
                     </tr>
                     <tr valign="top">
+                        <th scope="row">Afficher le bouton de gestion</th>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="cg_show_alert_small" value="1" <?php checked(get_option('cg_show_alert_small', '1'), '1'); ?> />
+                                Afficher le petit bouton en bas du site pour gérer le consentement
+                            </label>
+                            <p class="description">Ce bouton permet aux visiteurs de modifier leur consentement à tout moment.</p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
                         <th scope="row">JavaScript personnalisé ( sans les balises script ) </th>
                         <td>
                             <textarea name="cg_custom_js" rows="10" cols="50" class="large-text code"><?php echo esc_textarea(get_option('cg_custom_js', '')); ?></textarea>
@@ -152,6 +163,7 @@ class CookiesGestionWebglobal {
         $bg_color       = get_option('cg_button_bg_color', '#000000');
         $text_color     = get_option('cg_button_text_color', '#ffa726');
         $orientation    = get_option('cg_orientation', 'middle');
+        $show_alert_small = get_option('cg_show_alert_small', '1') === '1' ? 'true' : 'false';
         $plugin_dir     = plugin_dir_url(__FILE__);
         $parent_dir     = dirname($plugin_dir);
         ?>
@@ -173,7 +185,7 @@ class CookiesGestionWebglobal {
                 "groupServices": true,
                 "showDetailsOnClick": true,
                 "serviceDefaultState": "wait",
-                "showAlertSmall": true,
+                "showAlertSmall": <?php echo $show_alert_small; ?>,
                 "cookieslist": false,
                 "cookieslistEmbed": false,
                 "closePopup": true,
