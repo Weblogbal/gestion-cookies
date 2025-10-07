@@ -34,7 +34,7 @@ Voir le fichier [PolitiqueDeCookies.html](PolitiqueDeCookies.html)
 			"bodyPosition": "top", /* top place le bandeau de consentement au début du code html, mieux pour l'accessibilité */
 			"hashtag": "#tarteaucitron", /* Hashtag qui permet d'ouvrir le panneau de contrôle  */
 			"cookieName": "emulsioncookies", /* Nom du cookie (uniquement lettres et chiffres) */
-			"orientation": "middle", /* Position de la bannière (top - bottom - popup - banner) */
+			"orientation": "middle", /* Position de la bannière (top - bottom - popup - middle) */
 			"groupServices": true, /* Grouper les services par catégorie */
 			"showDetailsOnClick": true, /* Cliquer pour ouvrir la description */
 			"serviceDefaultState": "wait", /* Statut par défaut (true - wait - false) */		
