@@ -66,6 +66,8 @@ class Webglobal_Update_Checker {
      * Récupère la version actuelle du plugin
      */
     private function get_plugin_version() {
+        // Forcer la re-lecture du fichier pour s'assurer d'avoir la version actuelle
+        clearstatcache();
         $plugin_data = get_file_data($this->plugin_file, ['Version' => 'Version'], 'plugin');
         return $plugin_data['Version'];
     }
@@ -203,17 +205,20 @@ class Webglobal_Update_Checker {
     }
     
     /**
-     * Actions après l'installation/mise à jour (simplifié pour structure plate)
+     * Actions après l'installation/mise à jour
      */
     public function after_install($response, $hook_extra, $result) {
         global $wp_filesystem;
         
-        $install_directory = plugin_dir_path($this->plugin_file);
+        // Vérifier que c'est bien notre plugin qui est mis à jour
+        if (!isset($hook_extra['plugin']) || $hook_extra['plugin'] !== $this->plugin_slug) {
+            return $result;
+        }
         
-        // Avec la nouvelle structure plate, on déplace directement
-        $wp_filesystem->move($result['destination'], $install_directory);
-        $result['destination'] = $install_directory;
+        // Supprimer le cache de mise à jour pour forcer la re-vérification
+        delete_transient($this->cache_key);
         
+        // Vider le cache des plugins WordPress
         if ($this->cache_allowed) {
             wp_clean_plugins_cache();
         }
@@ -232,7 +237,17 @@ class Webglobal_Update_Checker {
             
             foreach ($options['plugins'] as $plugin) {
                 if ($plugin === $this->plugin_slug) {
+                    // Supprimer le cache de mise à jour
                     delete_transient($this->cache_key);
+                    
+                    // Forcer la mise à jour de la version du plugin en cache
+                    $this->plugin_version = $this->get_plugin_version();
+                    
+                    // Vider tous les caches liés aux plugins
+                    wp_clean_plugins_cache();
+                    delete_site_transient('update_plugins');
+                    
+                    break;
                 }
             }
         }
