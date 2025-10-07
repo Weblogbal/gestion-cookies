@@ -31,7 +31,6 @@ Voir le fichier [PolitiqueDeCookies.html](PolitiqueDeCookies.html)
 	<script type="text/javascript">
       tarteaucitron.init({
 			"privacyUrl": "/privacy", /* Url de la politique de confidentialité */
-
 			"bodyPosition": "top", /* top place le bandeau de consentement au début du code html, mieux pour l'accessibilité */
 			"hashtag": "#tarteaucitron", /* Hashtag qui permet d'ouvrir le panneau de contrôle  */
 			"cookieName": "emulsioncookies", /* Nom du cookie (uniquement lettres et chiffres) */

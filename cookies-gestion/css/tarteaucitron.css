@@ -56,7 +56,7 @@ html body #tarteaucitronRoot.tarteaucitronSize-popup #tarteaucitronAlertBig {
 
 .tarteaucitron-magic-block button {
     border-radius: 4px;
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
     cursor: pointer;
     display: inline-block;
     padding: 8px 10px;
@@ -705,11 +705,11 @@ div#tarteaucitronServices {
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine.tarteaucitronIsAllowed {
-    border-color: #fbd600;
+    border-color: var(--tarteaucitron-button-bg-color);
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine.tarteaucitronIsDenied {
-    border-color: #fbd600;
+    border-color: var(--tarteaucitron-button-bg-color);
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronMainLine {
@@ -761,9 +761,9 @@ div#tarteaucitronServices {
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine .tarteaucitronAsk .tarteaucitronAllow,
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine .tarteaucitronAsk .tarteaucitronDeny,
 .tac_activate .tarteaucitronAllow {
-    background: #fbd600;
+    background: var(--tarteaucitron-button-bg-color);
     border-radius: 4px;
-    color: #000;
+    color: var(--tarteaucitron-button-text-color);
     cursor: pointer;
     display: inline-block;
     padding: 8px 10px;
@@ -774,21 +774,21 @@ div#tarteaucitronServices {
 }
 
 #tarteaucitron #tarteaucitronServices #tarteaucitronAllAllowed.tarteaucitronIsSelected {
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
     opacity: 1;
 }
 #tarteaucitron #tarteaucitronServices #tarteaucitronAllDenied.tarteaucitronIsSelected,
 #tarteaucitron #tarteaucitronServices #tarteaucitronAllDenied2.tarteaucitronIsSelected {
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
     opacity: 1;
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine.tarteaucitronIsAllowed .tarteaucitronAllow,
 #tarteaucitron #tarteaucitronServices #tarteaucitronServices_mandatory .tarteaucitronLine button.tarteaucitronAllow {
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
 }
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine.tarteaucitronIsDenied .tarteaucitronDeny {
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
 }
 
 /*#tarteaucitron #tarteaucitronServices #tarteaucitronServices_mandatory .tarteaucitronLine button.tarteaucitronAllow{
@@ -1209,7 +1209,7 @@ html body #tarteaucitronRoot #tarteaucitron #tarteaucitronServicesnoTitle_cookie
 }
 
 .tac_activate .tac_float .tarteaucitronAllow {
-    background-color: #fbd600;
+    background-color: var(--tarteaucitron-button-bg-color);
     display: inline-block;
 }
 

@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.15
+ * Version: 1.0.20
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -86,6 +86,7 @@ class CookiesGestionWebglobal {
         register_setting('cookies_gestion_options', 'cg_button_text_color');
         register_setting('cookies_gestion_options', 'cg_privacy_url');
         register_setting('cookies_gestion_options', 'cg_custom_js');
+        register_setting('cookies_gestion_options', 'cg_orientation');
     }
 
     // Gérer les actions POST
@@ -117,6 +118,18 @@ class CookiesGestionWebglobal {
                         <td><input type="url" name="cg_privacy_url" value="<?php echo esc_attr(get_option('cg_privacy_url', '/privacy')); ?>" class="regular-text" /></td>
                     </tr>
                     <tr valign="top">
+                        <th scope="row">Position de la bannière</th>
+                        <td>
+                            <select name="cg_orientation">
+                                <option value="top" <?php selected(get_option('cg_orientation', 'middle'), 'top'); ?>>Haut (Top)</option>
+                                <option value="bottom" <?php selected(get_option('cg_orientation', 'middle'), 'bottom'); ?>>Bas (Bottom)</option>
+                                <option value="popup" <?php selected(get_option('cg_orientation', 'middle'), 'popup'); ?>>Popup</option>
+                                <option value="banner" <?php selected(get_option('cg_orientation', 'middle'), 'banner'); ?>>Bannière</option>
+                            </select>
+                            <p class="description">Choisissez le type d'affichage de la bannière de cookies.</p>
+                        </td>
+                    </tr>
+                    <tr valign="top">
                         <th scope="row">JavaScript personnalisé ( sans les balises script ) </th>
                         <td>
                             <textarea name="cg_custom_js" rows="10" cols="50" class="large-text code"><?php echo esc_textarea(get_option('cg_custom_js', '')); ?></textarea>
@@ -138,6 +151,7 @@ class CookiesGestionWebglobal {
         $privacy_url    = get_option('cg_privacy_url', '/privacy');
         $bg_color       = get_option('cg_button_bg_color', '#000000');
         $text_color     = get_option('cg_button_text_color', '#ffa726');
+        $orientation    = get_option('cg_orientation', 'middle');
         $plugin_dir     = plugin_dir_url(__FILE__);
         $parent_dir     = dirname($plugin_dir);
         ?>
@@ -155,7 +169,7 @@ class CookiesGestionWebglobal {
                 "bodyPosition": "top",
                 "hashtag": "#tarteaucitron",
                 "cookieName": "emulsioncookies",
-                "orientation": "middle",
+                "orientation": "<?php echo esc_js($orientation); ?>",
                 "groupServices": true,
                 "showDetailsOnClick": true,
                 "serviceDefaultState": "wait",
