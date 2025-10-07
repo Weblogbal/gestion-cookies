@@ -3,7 +3,7 @@
  * Plugin Name: Gestion Cookies Webglobal
  * Plugin URI: https://web-global.ch
  * Description: Plugin pour gérer les cookies avec tarteaucitron.js, personnalisation des couleurs et configuration.
- * Version: 1.0.30
+ * Version: 1.0.31
  * Author: Fabrice Simonet / Webglobal
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -125,7 +125,8 @@ class CookiesGestionWebglobal {
                                 <option value="top" <?php selected(get_option('cg_orientation', 'middle'), 'top'); ?>>Haut (Top)</option>
                                 <option value="bottom" <?php selected(get_option('cg_orientation', 'middle'), 'bottom'); ?>>Bas (Bottom)</option>
                                 <option value="popup" <?php selected(get_option('cg_orientation', 'middle'), 'popup'); ?>>Popup Gauche</option>
-                                <option value="banner" <?php selected(get_option('cg_orientation', 'middle'), 'middle'); ?>>Popup Centré</option>
+                                <option value="middle" <?php selected(get_option('cg_orientation', 'middle'), 'middle'); ?>>Popup Centré (Middle)</option>
+                                <option value="banner" <?php selected(get_option('cg_orientation', 'middle'), 'banner'); ?>>Bannière</option>
                             </select>
                             <p class="description">Choisissez le type d'affichage de la bannière de cookies.</p>
                         </td>
